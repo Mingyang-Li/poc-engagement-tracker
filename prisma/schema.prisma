@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Engagement {
+  id                String           @id @default(uuid())
+  name              String
+  engagementPartner String
+  engagementManager String
+  budgets           Budget[]
+  timesheetEntries  TimesheetEntry[]
+}
+
+model Budget {
+  id           String     @id @default(uuid())
+  engagementId String
+  weekEnding   DateTime
+  amount       Float
+  engagement   Engagement @relation(fields: [engagementId], references: [id])
+  phase        String
+}
+
+model TimesheetEntry {
+  id            String     @id @default(uuid())
+  engagementId  String
+  hourlyRate    Float
+  hoursWorked   Float
+  weekEnding    DateTime
+  engagement    Engagement @relation(fields: [engagementId], references: [id])
+  phase         String
+  employeeName  String
+  employeeTitle String
+}
