@@ -1,5 +1,5 @@
 import * as c from 'colorette';
-import { PrismaClient, Prisma, Engagement, Budget } from '@prisma/client';
+import { PrismaClient, Prisma, Engagement } from '@prisma/client';
 import * as f from '@ngneat/falso';
 import { ResultAsync, err, fromPromise, ok } from 'neverthrow';
 
@@ -24,7 +24,7 @@ export const customEngagements = [
   `Engagement - Software Development`,
   `Engagement - Mergers & Acquisitions`,
   `Engagement - Corporate Finance`,
-  `Engagement - Transactional Services`,
+  `Engagement - Transaction Services`,
 ] as const;
 export type CustomEngagement = (typeof customEngagements)[number];
 
@@ -70,7 +70,7 @@ export const engagementsWithPhases: EngagementWithPhases[] = [
     engagementManager: f.randFullName({ withAccents: false }),
     phases: [
       `Initial Target Identification`,
-      `Due Dilliugence`,
+      `Due Dilligence`,
       `Valuation & Deal Structuring`,
       `Post Merger Integration`,
     ],
@@ -89,7 +89,7 @@ export const engagementsWithPhases: EngagementWithPhases[] = [
     ],
   },
   {
-    engagementName: `Engagement - Transactional Services`,
+    engagementName: `Engagement - Transaction Services`,
     engagementPartner: f.randFullName({ withAccents: false }),
     engagementManager: f.randFullName({ withAccents: false }),
     phases: [
@@ -128,7 +128,7 @@ export const employeesByEngagement: EmployeesByEngagement = {
   'Engagement - Corporate Finance': Array.from({ length: 6 }).map(() =>
     f.randFullName({ withAccents: false }),
   ),
-  'Engagement - Transactional Services': Array.from({ length: 6 }).map(() =>
+  'Engagement - Transaction Services': Array.from({ length: 6 }).map(() =>
     f.randFullName({ withAccents: false }),
   ),
 };
