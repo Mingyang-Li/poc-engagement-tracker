@@ -35,6 +35,40 @@ export type EngagementWithPhases = {
   phases: string[];
 };
 
+export const titles = [
+  `Graduate`,
+  `Associate`,
+  `Senior Associate`,
+  `Associate Manager`,
+  `Manager`,
+  `Senior Manager`,
+  `Associate Director`,
+  `Director`,
+  `Senior Director`,
+  `Partner`,
+] as const;
+export type Title = (typeof titles)[number];
+
+/** Fixed  */
+export const hourlyRateByTitle = new Map<Title, number>([
+  [`Graduate`, 250],
+  [`Associate`, 275],
+  [`Senior Associate`, 300],
+  [`Associate Manager`, 350],
+  [`Manager`, 375],
+  [`Senior Manager`, 400],
+  [`Associate Director`, 450],
+  [`Director`, 500],
+  [`Senior Director`, 550],
+  [`Partner`, 600],
+]);
+
+export type Employee = {
+  fullName: string;
+  email: string;
+  title: Title;
+};
+
 /**
  * Making it easier to view custom engagement details
  */
@@ -112,39 +146,64 @@ export const engagementsByName: EngagementsByName = new Map<
 >(engagementsWithPhases?.map((item) => [item?.engagementName, item]));
 
 export type EmployeesByEngagement = {
-  [key in CustomEngagement]: string[];
+  [key in CustomEngagement]: Employee[];
 };
 /** Static employees for each engagement */
 export const employeesByEngagement: EmployeesByEngagement = {
-  'Engagement - Data Science': Array.from({ length: 6 }).map(() =>
-    f.randFullName({ withAccents: false }),
+  'Engagement - Data Science': Array.from({ length: 6 }).map(
+    () => {
+      const firstName = f.randFirstName({ withAccents: false });
+      const lastName = f.randLastName({ withAccents: false });
+      const employee: Employee = {
+        fullName: `${firstName} ${lastName}`,
+        email: f.randEmail({ firstName, lastName, nameSeparator: `-` }),
+        title: titles[f.randNumber({ min: 0, max: titles?.length - 1 })],
+      };
+      return employee;
+    },
+    // f.randFullName({ withAccents: false }),
   ),
-  'Engagement - Software Development': Array.from({ length: 6 }).map(() =>
-    f.randFullName({ withAccents: false }),
-  ),
-  'Engagement - Mergers & Acquisitions': Array.from({ length: 6 }).map(() =>
-    f.randFullName({ withAccents: false }),
-  ),
-  'Engagement - Corporate Finance': Array.from({ length: 6 }).map(() =>
-    f.randFullName({ withAccents: false }),
-  ),
-  'Engagement - Transaction Services': Array.from({ length: 6 }).map(() =>
-    f.randFullName({ withAccents: false }),
-  ),
+  'Engagement - Software Development': Array.from({ length: 6 }).map(() => {
+    const firstName = f.randFirstName({ withAccents: false });
+    const lastName = f.randLastName({ withAccents: false });
+    const employee: Employee = {
+      fullName: `${firstName} ${lastName}`,
+      email: f.randEmail({ firstName, lastName, nameSeparator: `-` }),
+      title: titles[f.randNumber({ min: 0, max: titles?.length - 1 })],
+    };
+    return employee;
+  }),
+  'Engagement - Mergers & Acquisitions': Array.from({ length: 6 }).map(() => {
+    const firstName = f.randFirstName({ withAccents: false });
+    const lastName = f.randLastName({ withAccents: false });
+    const employee: Employee = {
+      fullName: `${firstName} ${lastName}`,
+      email: f.randEmail({ firstName, lastName, nameSeparator: `-` }),
+      title: titles[f.randNumber({ min: 0, max: titles?.length - 1 })],
+    };
+    return employee;
+  }),
+  'Engagement - Corporate Finance': Array.from({ length: 6 }).map(() => {
+    const firstName = f.randFirstName({ withAccents: false });
+    const lastName = f.randLastName({ withAccents: false });
+    const employee: Employee = {
+      fullName: `${firstName} ${lastName}`,
+      email: f.randEmail({ firstName, lastName, nameSeparator: `-` }),
+      title: titles[f.randNumber({ min: 0, max: titles?.length - 1 })],
+    };
+    return employee;
+  }),
+  'Engagement - Transaction Services': Array.from({ length: 6 }).map(() => {
+    const firstName = f.randFirstName({ withAccents: false });
+    const lastName = f.randLastName({ withAccents: false });
+    const employee: Employee = {
+      fullName: `${firstName} ${lastName}`,
+      email: f.randEmail({ firstName, lastName, nameSeparator: `-` }),
+      title: titles[f.randNumber({ min: 0, max: titles?.length - 1 })],
+    };
+    return employee;
+  }),
 };
-
-export const titles = [
-  `Graduate`,
-  `Associate`,
-  `Senior Associate`,
-  `Associate Manager`,
-  `Manager`,
-  `Senior Manager`,
-  `Associate Director`,
-  `Director`,
-  `Senior Director`,
-  `Partner`,
-] as const;
 
 export type SeedEngagementsArgs = {
   prisma: PrismaClient;
@@ -239,6 +298,8 @@ export const generateBudgetData = (
 ): Map<string, Prisma.BudgetCreateInput[]> => {
   const { weekEndings, engagementsCreated, engagementsByName } = args;
 
+  const weeklyBudgetFigures = [0, 1500, 3000, 4500, 6000, 10000];
+
   const budgetsByEngagementIds = new Map<string, Prisma.BudgetCreateInput[]>(
     engagementsCreated?.map((engagement) => {
       // engagement ID
@@ -258,7 +319,13 @@ export const generateBudgetData = (
                 engagement: { connect: { id: engagementId } },
                 phase,
                 weekEnding,
-                amount: 3000,
+                amount:
+                  weeklyBudgetFigures[
+                    f.randNumber({
+                      min: 0,
+                      max: weeklyBudgetFigures?.length - 1,
+                    })
+                  ],
               };
               return input;
             })
@@ -334,15 +401,22 @@ export const seedTimesheetEntries = async (args: {
             ?.map((phase) => {
               return employeesOfCurrentEngagement
                 ?.map((employee) => {
+                  const hourlyRate = hourlyRateByTitle.get(
+                    employee?.title,
+                  ) as number;
+
+                  const hoursWorked = f.randNumber({ min: 0.25, max: 60 });
+                  const employeeName = employee?.fullName;
+                  const employeeTitle = employee?.title;
+
                   const input: Prisma.TimesheetEntryCreateInput = {
                     engagement: { connect: { id: engagementId } },
                     phase,
                     weekEnding,
-                    hourlyRate: 200, // to update
-                    hoursWorked: 3, // to update
-                    employeeName: employee,
-                    employeeTitle:
-                      titles[f.randNumber({ min: 0, max: titles?.length })],
+                    hourlyRate,
+                    hoursWorked,
+                    employeeName,
+                    employeeTitle,
                   };
                   return input;
                 })
