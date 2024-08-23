@@ -135,6 +135,36 @@ export const engagementsWithPhases: EngagementWithPhases[] = [
   },
 ];
 
+/**
+ * Generate x number of employees
+ *
+ * @returns Employee[]
+ */
+export const generateXExployees = (x: number): Employee[] => {
+  let count = Math.abs(x);
+
+  if (Number.isNaN(count)) {
+    count = 5;
+  }
+
+  if (count > 20) {
+    count = 20;
+  }
+
+  return Array.from({ length: count }).map(() => {
+    const firstName = f.randFirstName({ withAccents: false });
+    const lastName = f.randLastName({ withAccents: false });
+    const employee: Employee = {
+      fullName: `${firstName} ${lastName}`,
+      email: f.randEmail({ firstName, lastName, nameSeparator: `-` }),
+      title: titles[f.randNumber({ min: 0, max: titles?.length - 1 })],
+    };
+    return employee;
+  });
+};
+
+generateXExployees(-10);
+
 export type EngagementsByName = Map<CustomEngagement, EngagementWithPhases>;
 /**
  * Making it easier to lodate custom details of engagements
@@ -150,59 +180,21 @@ export type EmployeesByEngagement = {
 };
 /** Static employees for each engagement */
 export const employeesByEngagement: EmployeesByEngagement = {
-  'Engagement - Data Science': Array.from({ length: 6 }).map(
-    () => {
-      const firstName = f.randFirstName({ withAccents: false });
-      const lastName = f.randLastName({ withAccents: false });
-      const employee: Employee = {
-        fullName: `${firstName} ${lastName}`,
-        email: f.randEmail({ firstName, lastName, nameSeparator: `-` }),
-        title: titles[f.randNumber({ min: 0, max: titles?.length - 1 })],
-      };
-      return employee;
-    },
-    // f.randFullName({ withAccents: false }),
+  'Engagement - Data Science': generateXExployees(
+    f.randNumber({ min: 3, max: 10 }),
   ),
-  'Engagement - Software Development': Array.from({ length: 6 }).map(() => {
-    const firstName = f.randFirstName({ withAccents: false });
-    const lastName = f.randLastName({ withAccents: false });
-    const employee: Employee = {
-      fullName: `${firstName} ${lastName}`,
-      email: f.randEmail({ firstName, lastName, nameSeparator: `-` }),
-      title: titles[f.randNumber({ min: 0, max: titles?.length - 1 })],
-    };
-    return employee;
-  }),
-  'Engagement - Mergers & Acquisitions': Array.from({ length: 6 }).map(() => {
-    const firstName = f.randFirstName({ withAccents: false });
-    const lastName = f.randLastName({ withAccents: false });
-    const employee: Employee = {
-      fullName: `${firstName} ${lastName}`,
-      email: f.randEmail({ firstName, lastName, nameSeparator: `-` }),
-      title: titles[f.randNumber({ min: 0, max: titles?.length - 1 })],
-    };
-    return employee;
-  }),
-  'Engagement - Corporate Finance': Array.from({ length: 6 }).map(() => {
-    const firstName = f.randFirstName({ withAccents: false });
-    const lastName = f.randLastName({ withAccents: false });
-    const employee: Employee = {
-      fullName: `${firstName} ${lastName}`,
-      email: f.randEmail({ firstName, lastName, nameSeparator: `-` }),
-      title: titles[f.randNumber({ min: 0, max: titles?.length - 1 })],
-    };
-    return employee;
-  }),
-  'Engagement - Transaction Services': Array.from({ length: 6 }).map(() => {
-    const firstName = f.randFirstName({ withAccents: false });
-    const lastName = f.randLastName({ withAccents: false });
-    const employee: Employee = {
-      fullName: `${firstName} ${lastName}`,
-      email: f.randEmail({ firstName, lastName, nameSeparator: `-` }),
-      title: titles[f.randNumber({ min: 0, max: titles?.length - 1 })],
-    };
-    return employee;
-  }),
+  'Engagement - Software Development': generateXExployees(
+    f.randNumber({ min: 3, max: 10 }),
+  ),
+  'Engagement - Mergers & Acquisitions': generateXExployees(
+    f.randNumber({ min: 3, max: 10 }),
+  ),
+  'Engagement - Corporate Finance': generateXExployees(
+    f.randNumber({ min: 3, max: 10 }),
+  ),
+  'Engagement - Transaction Services': generateXExployees(
+    f.randNumber({ min: 3, max: 10 }),
+  ),
 };
 
 export type SeedEngagementsArgs = {
