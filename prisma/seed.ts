@@ -163,8 +163,6 @@ export const generateXExployees = (x: number): Employee[] => {
   });
 };
 
-generateXExployees(-10);
-
 export type EngagementsByName = Map<CustomEngagement, EngagementWithPhases>;
 /**
  * Making it easier to lodate custom details of engagements
