@@ -1,0 +1,293 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type BudgetAvgAggregate {
+  amount: Float
+}
+
+type BudgetCountAggregate {
+  id: Int!
+  engagementId: Int!
+  weekEnding: Int!
+  amount: Int!
+  phase: Int!
+  _all: Int!
+}
+
+type BudgetMaxAggregate {
+  id: String
+  engagementId: String
+  weekEnding: DateTime
+  amount: Float
+  phase: String
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type BudgetMinAggregate {
+  id: String
+  engagementId: String
+  weekEnding: DateTime
+  amount: Float
+  phase: String
+}
+
+type BudgetSumAggregate {
+  amount: Float
+}
+
+type Budget {
+  id: ID!
+  engagementId: String!
+  weekEnding: DateTime!
+  amount: Float!
+  phase: String!
+  engagement: Engagement!
+}
+
+type EngagementCountAggregate {
+  id: Int!
+  name: Int!
+  engagementPartner: Int!
+  engagementManager: Int!
+  _all: Int!
+}
+
+type EngagementCount {
+  budgets: Int!
+  timesheetEntries: Int!
+}
+
+type EngagementMaxAggregate {
+  id: String
+  name: String
+  engagementPartner: String
+  engagementManager: String
+}
+
+type EngagementMinAggregate {
+  id: String
+  name: String
+  engagementPartner: String
+  engagementManager: String
+}
+
+type Engagement {
+  id: ID!
+  name: String!
+  engagementPartner: String!
+  engagementManager: String!
+  budgets: [Budget!]
+  timesheetEntries: [TimesheetEntry!]
+  _count: EngagementCount!
+}
+
+type TimesheetEntryAvgAggregate {
+  hourlyRate: Float
+  hoursWorked: Float
+}
+
+type TimesheetEntryCountAggregate {
+  id: Int!
+  engagementId: Int!
+  hourlyRate: Int!
+  hoursWorked: Int!
+  weekEnding: Int!
+  phase: Int!
+  employeeName: Int!
+  employeeTitle: Int!
+  _all: Int!
+}
+
+type TimesheetEntryMaxAggregate {
+  id: String
+  engagementId: String
+  hourlyRate: Float
+  hoursWorked: Float
+  weekEnding: DateTime
+  phase: String
+  employeeName: String
+  employeeTitle: String
+}
+
+type TimesheetEntryMinAggregate {
+  id: String
+  engagementId: String
+  hourlyRate: Float
+  hoursWorked: Float
+  weekEnding: DateTime
+  phase: String
+  employeeName: String
+  employeeTitle: String
+}
+
+type TimesheetEntrySumAggregate {
+  hourlyRate: Float
+  hoursWorked: Float
+}
+
+type TimesheetEntry {
+  id: ID!
+  engagementId: String!
+  hourlyRate: Float!
+  hoursWorked: Float!
+  weekEnding: DateTime!
+  phase: String!
+  employeeName: String!
+  employeeTitle: String!
+  engagement: Engagement!
+}
+
+type Query {
+  findOneEngagement(where: EngagementWhereUniqueInput!): Engagement!
+}
+
+input EngagementWhereUniqueInput {
+  id: String
+  AND: [EngagementWhereInput!]
+  OR: [EngagementWhereInput!]
+  NOT: [EngagementWhereInput!]
+  name: StringFilter
+  engagementPartner: StringFilter
+  engagementManager: StringFilter
+  budgets: BudgetListRelationFilter
+  timesheetEntries: TimesheetEntryListRelationFilter
+}
+
+input EngagementWhereInput {
+  AND: [EngagementWhereInput!]
+  OR: [EngagementWhereInput!]
+  NOT: [EngagementWhereInput!]
+  id: StringFilter
+  name: StringFilter
+  engagementPartner: StringFilter
+  engagementManager: StringFilter
+  budgets: BudgetListRelationFilter
+  timesheetEntries: TimesheetEntryListRelationFilter
+}
+
+input StringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: NestedStringFilter
+}
+
+enum QueryMode {
+  default
+  insensitive
+}
+
+input NestedStringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringFilter
+}
+
+input BudgetListRelationFilter {
+  every: BudgetWhereInput
+  some: BudgetWhereInput
+  none: BudgetWhereInput
+}
+
+input BudgetWhereInput {
+  AND: [BudgetWhereInput!]
+  OR: [BudgetWhereInput!]
+  NOT: [BudgetWhereInput!]
+  id: StringFilter
+  engagementId: StringFilter
+  weekEnding: DateTimeFilter
+  amount: FloatFilter
+  phase: StringFilter
+  engagement: EngagementRelationFilter
+}
+
+input DateTimeFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeFilter
+}
+
+input NestedDateTimeFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: NestedDateTimeFilter
+}
+
+input FloatFilter {
+  equals: Float
+  in: [Float!]
+  notIn: [Float!]
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: NestedFloatFilter
+}
+
+input NestedFloatFilter {
+  equals: Float
+  in: [Float!]
+  notIn: [Float!]
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: NestedFloatFilter
+}
+
+input EngagementRelationFilter {
+  is: EngagementWhereInput
+  isNot: EngagementWhereInput
+}
+
+input TimesheetEntryListRelationFilter {
+  every: TimesheetEntryWhereInput
+  some: TimesheetEntryWhereInput
+  none: TimesheetEntryWhereInput
+}
+
+input TimesheetEntryWhereInput {
+  AND: [TimesheetEntryWhereInput!]
+  OR: [TimesheetEntryWhereInput!]
+  NOT: [TimesheetEntryWhereInput!]
+  id: StringFilter
+  engagementId: StringFilter
+  hourlyRate: FloatFilter
+  hoursWorked: FloatFilter
+  weekEnding: DateTimeFilter
+  phase: StringFilter
+  employeeName: StringFilter
+  employeeTitle: StringFilter
+  engagement: EngagementRelationFilter
+}
