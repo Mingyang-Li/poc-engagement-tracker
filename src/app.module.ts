@@ -3,6 +3,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { EngagementModule } from './modules/engagement.module';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
 @Module({
   imports: [
@@ -11,7 +12,8 @@ import { EngagementModule } from './modules/engagement.module';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), './schema.graphql'),
       introspection: true,
-      playground: true,
+      playground: false,
+      plugins: [ApolloServerPluginLandingPageLocalDefault()],
       installSubscriptionHandlers: true,
     }),
   ],
