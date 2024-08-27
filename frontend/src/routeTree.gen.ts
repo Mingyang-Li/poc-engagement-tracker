@@ -12,11 +12,29 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
+import { Route as EngagementIndexImport } from './routes/engagement/index'
+import { Route as EngagementCreateImport } from './routes/engagement/create'
+import { Route as EngagementEditIdImport } from './routes/engagement/edit.$id'
 
 // Create/Update Routes
 
 const IndexRoute = IndexImport.update({
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const EngagementIndexRoute = EngagementIndexImport.update({
+  path: '/engagement/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const EngagementCreateRoute = EngagementCreateImport.update({
+  path: '/engagement/create',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const EngagementEditIdRoute = EngagementEditIdImport.update({
+  path: '/engagement/edit/$id',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -31,12 +49,38 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/engagement/create': {
+      id: '/engagement/create'
+      path: '/engagement/create'
+      fullPath: '/engagement/create'
+      preLoaderRoute: typeof EngagementCreateImport
+      parentRoute: typeof rootRoute
+    }
+    '/engagement/': {
+      id: '/engagement/'
+      path: '/engagement'
+      fullPath: '/engagement'
+      preLoaderRoute: typeof EngagementIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/engagement/edit/$id': {
+      id: '/engagement/edit/$id'
+      path: '/engagement/edit/$id'
+      fullPath: '/engagement/edit/$id'
+      preLoaderRoute: typeof EngagementEditIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({ IndexRoute })
+export const routeTree = rootRoute.addChildren({
+  IndexRoute,
+  EngagementCreateRoute,
+  EngagementIndexRoute,
+  EngagementEditIdRoute,
+})
 
 /* prettier-ignore-end */
 
@@ -46,11 +90,23 @@ export const routeTree = rootRoute.addChildren({ IndexRoute })
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/engagement/create",
+        "/engagement/",
+        "/engagement/edit/$id"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/engagement/create": {
+      "filePath": "engagement/create.tsx"
+    },
+    "/engagement/": {
+      "filePath": "engagement/index.tsx"
+    },
+    "/engagement/edit/$id": {
+      "filePath": "engagement/edit.$id.tsx"
     }
   }
 }
