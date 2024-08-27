@@ -4,7 +4,7 @@ import { Result, err, ok } from 'neverthrow';
 import { logger } from '@/utils/logger';
 import { fromError } from 'zod-validation-error';
 import * as f from '@ngneat/falso';
-import { Engagement } from '@/generated';
+import { Budget, Engagement } from '@/generated';
 import { BudgetStatus } from '@/utils/constants';
 
 const getbudgetStatus = (args: {
@@ -65,8 +65,35 @@ export const findBudgetReportByWeekEnding = (
     max: 1000000,
   });
   const overallStatusYtd = getbudgetStatus({
-    cost: overallCostThisWeek,
-    budget: overallBudgetThisWeek,
+    cost: overallCostYtd,
+    budget: overallBudgetYtd,
+  });
+
+  const engagementPhases = Array.from(
+    { length: 4 },
+    () => `Phase ${f.randSkill()}`,
+  );
+
+  const budgetBreakdownThisWeek = engagementPhases?.map((phase) => {
+    const item: Budget = {
+      id: f.randUuid(),
+      engagementId: engagement?.id,
+      weekEnding: args,
+      amount: f.randNumber({ precision: 10, min: 1000, max: 8000 }),
+      phase,
+    };
+    return item;
+  });
+
+  const budgetBreakdownYtd = engagementPhases?.map((phase) => {
+    const item: Budget = {
+      id: f.randUuid(),
+      engagementId: engagement?.id,
+      weekEnding: args,
+      amount: f.randNumber({ precision: 10, min: 10000, max: 1000000 }),
+      phase,
+    };
+    return item;
   });
 
   const response: BudgetReport = {
@@ -78,11 +105,13 @@ export const findBudgetReportByWeekEnding = (
     overallCostThisWeek,
     overallBudgetThisWeek,
     overallStatusThisWeek,
+    budgetBreakdownThisWeek,
 
     // budget report - YTD
     overallCostYtd,
     overallBudgetYtd,
     overallStatusYtd,
+    budgetBreakdownYtd,
   };
 
   return ok<BudgetReport>(response);
