@@ -8,6 +8,7 @@ const Page = () => {
       <Link to={`/engagement`}>
         <button>View engagements</button>
       </Link>
+      <h1 className="text-3xl font-bold bg-blue-500">Hello world!</h1>
     </>
   );
 };
