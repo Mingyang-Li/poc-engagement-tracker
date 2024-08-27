@@ -1,3 +1,4 @@
+import { Engagement } from '@/generated/graphql';
 import {
   Card,
   CardHeader,
@@ -6,8 +7,10 @@ import {
   Typography,
   Button,
 } from '@material-tailwind/react';
+import { Link } from '@tanstack/react-router';
 
-export const EngagementCard = () => {
+export const EngagementCard = (props: Partial<Engagement>) => {
+  const {engagementManager, engagementPartner, name} = props
   return (
     <Card className="mt-6 w-96">
       <CardHeader color="blue-gray" className="relative h-56">
@@ -18,16 +21,21 @@ export const EngagementCard = () => {
       </CardHeader>
       <CardBody>
         <Typography variant="h5" color="blue-gray" className="mb-2">
-          UI/UX Review Check
+          {name}
         </Typography>
         <Typography>
-          The place is close to Barceloneta Beach and bus stop just 2 min by
-          walk and near to &quot;Naviglio&quot; where you can enjoy the main
-          night life in Barcelona.
+            <strong>{`Eng Partner: `}</strong>
+            {engagementPartner}
+        </Typography>
+        <Typography>
+        <strong>{`Eng Manager: `}</strong>
+        {engagementManager}
         </Typography>
       </CardBody>
       <CardFooter className="pt-0">
-        <Button>Read More</Button>
+        <Link>
+        <Button>View Details</Button>
+        </Link>
       </CardFooter>
     </Card>
   );
