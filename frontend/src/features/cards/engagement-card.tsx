@@ -10,7 +10,7 @@ import {
 import { Link } from '@tanstack/react-router';
 
 export const EngagementCard = (props: Partial<Engagement>) => {
-  const {engagementManager, engagementPartner, name} = props
+  const { engagementManager, engagementPartner, name, id } = props;
   return (
     <Card className="mt-6 w-96">
       <CardHeader color="blue-gray" className="relative h-56">
@@ -24,17 +24,22 @@ export const EngagementCard = (props: Partial<Engagement>) => {
           {name}
         </Typography>
         <Typography>
-            <strong>{`Eng Partner: `}</strong>
-            {engagementPartner}
+          <strong>{`Eng Partner: `}</strong>
+          {engagementPartner}
         </Typography>
         <Typography>
-        <strong>{`Eng Manager: `}</strong>
-        {engagementManager}
+          <strong>{`Eng Manager: `}</strong>
+          {engagementManager}
         </Typography>
       </CardBody>
       <CardFooter className="pt-0">
-        <Link>
-        <Button>View Details</Button>
+        <Link
+          to={`/engagement/budget-report`}
+          search={{
+            engagementId: id as string,
+          }}
+        >
+          <Button>View Details</Button>
         </Link>
       </CardFooter>
     </Card>

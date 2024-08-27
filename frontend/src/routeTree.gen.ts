@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as EngagementIndexImport } from './routes/engagement/index'
 import { Route as EngagementCreateImport } from './routes/engagement/create'
+import { Route as EngagementBudgetReportImport } from './routes/engagement/budget-report'
 import { Route as EngagementEditIdImport } from './routes/engagement/edit.$id'
 
 // Create/Update Routes
@@ -33,6 +34,11 @@ const EngagementCreateRoute = EngagementCreateImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const EngagementBudgetReportRoute = EngagementBudgetReportImport.update({
+  path: '/engagement/budget-report',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const EngagementEditIdRoute = EngagementEditIdImport.update({
   path: '/engagement/edit/$id',
   getParentRoute: () => rootRoute,
@@ -47,6 +53,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/engagement/budget-report': {
+      id: '/engagement/budget-report'
+      path: '/engagement/budget-report'
+      fullPath: '/engagement/budget-report'
+      preLoaderRoute: typeof EngagementBudgetReportImport
       parentRoute: typeof rootRoute
     }
     '/engagement/create': {
@@ -77,6 +90,7 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
+  EngagementBudgetReportRoute,
   EngagementCreateRoute,
   EngagementIndexRoute,
   EngagementEditIdRoute,
@@ -91,6 +105,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/engagement/budget-report",
         "/engagement/create",
         "/engagement/",
         "/engagement/edit/$id"
@@ -98,6 +113,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/engagement/budget-report": {
+      "filePath": "engagement/budget-report.tsx"
     },
     "/engagement/create": {
       "filePath": "engagement/create.tsx"

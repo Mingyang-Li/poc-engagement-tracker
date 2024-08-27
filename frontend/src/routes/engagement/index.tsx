@@ -22,6 +22,7 @@ const Page = () => {
         {engagements?.map((item) => (
           <EngagementCard
             key={item?.id}
+            id={item?.id}
             name={item?.name}
             engagementManager={item?.engagementManager}
             engagementPartner={item?.engagementPartner}
