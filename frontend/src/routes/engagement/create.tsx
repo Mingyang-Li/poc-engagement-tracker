@@ -1,5 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/engagement/create')({
-  component: () => <div>Hello /engagement/create!</div>
-})
+  component: () => <div>Hello /engagement/create!</div>,
+});

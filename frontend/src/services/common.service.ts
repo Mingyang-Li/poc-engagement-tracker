@@ -2,7 +2,7 @@
  * Given a number (of the year),
  * return an array of date objects where all
  * dates are Sundays
- * 
+ *
  * Useful when getting the week-endings of
  * an engagement
  */

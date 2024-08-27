@@ -8,7 +8,7 @@ const Page = () => {
   return (
     <>
       <div>Engagement table page</div>
-      {engagements?.map(item => (<p>{item}</p>))}
+      {engagements?.map((item) => <p>{item}</p>)}
     </>
   );
 };

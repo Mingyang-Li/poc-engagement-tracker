@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { Link } from '@tanstack/react-router';
+import { Button } from '@material-tailwind/react';
 
 const Page = () => {
   return (
@@ -9,6 +10,7 @@ const Page = () => {
         <button>View engagements</button>
       </Link>
       <h1 className="text-3xl font-bold bg-blue-500">Hello world!</h1>
+      <Button>test</Button>
     </>
   );
 };
