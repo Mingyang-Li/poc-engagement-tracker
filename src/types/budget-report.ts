@@ -1,28 +1,43 @@
-/** from prisma model */
-export class Enagagement {}
+import { Field, ObjectType } from '@nestjs/graphql';
+import { Budget, Engagement } from '@/generated';
 
-/** from prisma model */
-export class Budget {
-  phase: string;
-  cost: number;
-  budget: number;
-}
-
+@ObjectType({
+  description: `Useful for displaying all critical info of a budget report for a particular week-ending`,
+})
 export class BudgetReport {
   // overall info
-  weekEnding: Date;
-  engagementId: string;
-  enagagement: Enagagement;
+  @Field(() => Date, { nullable: true })
+  weekEnding?: Date;
+
+  @Field(() => String, { nullable: true })
+  engagementId?: string;
+
+  @Field(() => Engagement, { nullable: true })
+  engagement?: Engagement;
 
   // budget info for the week
-  overallBudgetThisWeek: number;
-  overallCostThisWeek: number;
-  overallStatusThisWeek: number;
-  budgetBreakdownThisWeek: Budget[];
+  @Field(() => Number, { nullable: true })
+  overallBudgetThisWeek?: number;
+
+  @Field(() => Number, { nullable: true })
+  overallCostThisWeek?: number;
+
+  @Field(() => String, { nullable: true })
+  overallStatusThisWeek?: string;
+
+  @Field(() => [Budget], { nullable: true })
+  budgetBreakdownThisWeek?: Budget[];
 
   // budget info YTD
-  overallBudgetYtd: number;
-  overallCostYtd: number;
-  overallStatusYtd: number;
-  budgetBreakdownYtd: Budget[];
+  @Field(() => Number, { nullable: true })
+  overallBudgetYtd?: number;
+
+  @Field(() => Number, { nullable: true })
+  overallCostYtd?: number;
+
+  @Field(() => String, { nullable: true })
+  overallStatusYtd?: string;
+
+  @Field(() => [Budget], { nullable: true })
+  budgetBreakdownYtd?: Budget[];
 }

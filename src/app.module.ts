@@ -2,12 +2,11 @@ import { Module } from '@nestjs/common';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
-import { EngagementModule } from './modules/engagement.module';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import { BudgetReportResolver } from '@/resolvers/budget-report.resolver';
 
 @Module({
   imports: [
-    EngagementModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), './schema.graphql'),
@@ -16,6 +15,8 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
       installSubscriptionHandlers: true,
     }),
+    BudgetReportResolver,
   ],
+  exports: [BudgetReportResolver]
 })
 export class AppModule {}
