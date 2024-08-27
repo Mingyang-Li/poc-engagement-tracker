@@ -26,6 +26,9 @@ importers:
       '@nestjs/platform-express':
         specifier: 10.0.0
         version: 10.0.0(@nestjs/common@10.0.0(class-transformer@0.5.1)(reflect-metadata@0.2.0)(rxjs@7.8.1))(@nestjs/core@10.0.0)
+      '@ngneat/falso':
+        specifier: 7.2.0
+        version: 7.2.0
       '@prisma/client':
         specifier: 5.18.0
         version: 5.18.0(prisma@5.18.0)
@@ -57,9 +60,6 @@ importers:
       '@nestjs/testing':
         specifier: 10.0.0
         version: 10.0.0(@nestjs/common@10.0.0(class-transformer@0.5.1)(reflect-metadata@0.2.0)(rxjs@7.8.1))(@nestjs/core@10.0.0(@nestjs/common@10.0.0(class-transformer@0.5.1)(reflect-metadata@0.2.0)(rxjs@7.8.1))(@nestjs/platform-express@10.0.0)(reflect-metadata@0.2.0)(rxjs@7.8.1))(@nestjs/platform-express@10.0.0(@nestjs/common@10.0.0(class-transformer@0.5.1)(reflect-metadata@0.2.0)(rxjs@7.8.1))(@nestjs/core@10.0.0))
-      '@ngneat/falso':
-        specifier: 7.2.0
-        version: 7.2.0
       '@types/express':
         specifier: 4.17.17
         version: 4.17.17
