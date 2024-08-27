@@ -17,6 +17,6 @@ import { BudgetReportResolver } from '@/resolvers/budget-report.resolver';
     }),
     BudgetReportResolver,
   ],
-  exports: [BudgetReportResolver]
+  exports: [BudgetReportResolver],
 })
 export class AppModule {}
