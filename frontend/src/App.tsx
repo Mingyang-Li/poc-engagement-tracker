@@ -1,6 +1,6 @@
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { routeTree } from './routeTree.gen';
-import { useApolloClient } from './hooks/use-apollo-client';
+import { useApolloClient } from '@/hooks/use-apollo-client';
 import { ApolloProvider } from '@apollo/client';
 import './index.css'
 
