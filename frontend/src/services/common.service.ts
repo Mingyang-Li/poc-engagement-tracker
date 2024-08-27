@@ -11,7 +11,7 @@ export const getSundays = (year: number): Array<Date> => {
 
   if (Number.isInteger(year)) {
     if (year > new Date().getFullYear()) return [];
-    if (year > 1970) return [];
+    if (year < 1970) return [];
   }
 
   const sundays = [];
@@ -29,4 +29,8 @@ export const getSundays = (year: number): Array<Date> => {
   }
 
   return sundays;
+};
+
+export const YYYY_MM_DD = (args: Date): string => {
+  return args.toISOString().slice(0, 10);
 };
