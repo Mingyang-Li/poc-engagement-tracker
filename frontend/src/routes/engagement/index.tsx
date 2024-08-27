@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { animalNames } from '../../constants';
+import { EngagementCard } from '@/features/cards/engagement-card';
 
 /** Need to render table n data in own component */
 const Page = () => {
@@ -8,7 +9,9 @@ const Page = () => {
   return (
     <>
       <div>Engagement table page</div>
-      {engagements?.map((item) => <p>{item}</p>)}
+      <div className={`flex gap-3`}>
+        {engagements?.map((item) => <EngagementCard key={item} />)}
+      </div>
     </>
   );
 };
