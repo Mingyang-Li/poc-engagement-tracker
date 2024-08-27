@@ -9,7 +9,7 @@ import { BudgetReportResolver } from '@/resolvers/budget-report.resolver';
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), './schema.graphql'),
+      autoSchemaFile: join(process.cwd(), './src/schema.graphql'),
       introspection: true,
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
