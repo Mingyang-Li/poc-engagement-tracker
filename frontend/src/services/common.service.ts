@@ -43,7 +43,6 @@ export const YYYY_MM_DD = (args: Date): string => {
   const date = args?.getDate();
   const dateString = date.toString()?.length === 1 ? `0${date}` : date;
   return `${year}-${monthString}-${dateString}`;
-  // return args.toDateString().slice(0, 10);
 };
 
 /**

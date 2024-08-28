@@ -8,11 +8,13 @@ import { createFileRoute } from '@tanstack/react-router';
 import { z } from 'zod';
 import { List, ListItem, Card, Typography } from '@material-tailwind/react';
 import { useEffect, useState } from 'react';
+import { useQuery } from '@apollo/client';
 
 const schema = z.object({
   engagementId: z.string(),
   weekEnding: z.date().default(new Date()).optional(),
 });
+
 
 const Page = () => {
   const weekEndings = getSundays(2024);
@@ -20,6 +22,8 @@ const Page = () => {
   const [selectedWeekEnding, setSelectedWeekEnding] = useState(
     getMostRecentWeekEnding({ weekEndings, startDate: new Date() }),
   );
+
+  // const {} = useQuery()
 
   return (
     <div className={`flex`}>

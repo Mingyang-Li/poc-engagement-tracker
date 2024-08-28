@@ -160,5 +160,10 @@ type BudgetReport {
 }
 
 type Query {
-  getBudgetReportByWeekEnding(weekEnding: DateTime!): BudgetReport!
+  getBudgetReportByWeekEnding(args: GetBudgetReportArgs!): BudgetReport!
+}
+
+input GetBudgetReportArgs {
+  weekEnding: DateTime!
+  engagementId: String!
 }

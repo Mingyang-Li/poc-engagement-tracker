@@ -6,6 +6,7 @@ import { fromError } from 'zod-validation-error';
 import * as f from '@ngneat/falso';
 import { Budget, Engagement } from '@/generated';
 import { BudgetStatus } from '@/utils/constants';
+import { GetBudgetReportArgs } from '@/resolvers/budget-report.resolver';
 
 const getbudgetStatus = (args: {
   cost: number;
@@ -22,9 +23,10 @@ const getbudgetStatus = (args: {
 };
 
 export const findBudgetReportByWeekEnding = (
-  args: Date,
+  args: GetBudgetReportArgs,
 ): Result<BudgetReport, Error> => {
-  const validateInput = z.date().safeParse(args);
+  const { weekEnding } = args
+  const validateInput = z.date().safeParse(weekEnding);
 
   if (validateInput.success === false) {
     const { message } = fromError(validateInput.error);
@@ -78,7 +80,7 @@ export const findBudgetReportByWeekEnding = (
     const item: Budget = {
       id: f.randUuid(),
       engagementId: engagement?.id,
-      weekEnding: args,
+      weekEnding: weekEnding,
       amount: f.randNumber({ precision: 10, min: 1000, max: 8000 }),
       phase,
     };
@@ -89,7 +91,7 @@ export const findBudgetReportByWeekEnding = (
     const item: Budget = {
       id: f.randUuid(),
       engagementId: engagement?.id,
-      weekEnding: args,
+      weekEnding: weekEnding,
       amount: f.randNumber({ precision: 10, min: 10000, max: 1000000 }),
       phase,
     };
@@ -97,7 +99,7 @@ export const findBudgetReportByWeekEnding = (
   });
 
   const response: BudgetReport = {
-    weekEnding: args,
+    weekEnding: weekEnding,
     engagementId: engagement?.id,
     engagement,
 
