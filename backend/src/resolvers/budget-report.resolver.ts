@@ -16,11 +16,11 @@ export class GetBudgetReportArgs {
 @Resolver(() => BudgetReport)
 export class BudgetReportResolver {
   @Query(() => BudgetReport)
-  public async getBudgetReportByWeekEnding(
+  public async getBudgetReport(
     @Args(`args`, { type: () => GetBudgetReportArgs })
     args: GetBudgetReportArgs,
   ): Promise<BudgetReport> {
-    const result = service.findBudgetReportByWeekEnding(args);
+    const result = service.getBudgetReport(args);
     if (result.isErr()) {
       throw result.error;
     }

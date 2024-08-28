@@ -160,7 +160,7 @@ type BudgetReport {
 }
 
 type Query {
-  getBudgetReportByWeekEnding(args: GetBudgetReportArgs!): BudgetReport!
+  getBudgetReport(args: GetBudgetReportArgs!): BudgetReport!
 }
 
 input GetBudgetReportArgs {

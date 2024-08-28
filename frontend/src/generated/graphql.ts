@@ -128,11 +128,11 @@ export type GetBudgetReportArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  getBudgetReportByWeekEnding: BudgetReport;
+  getBudgetReport: BudgetReport;
 };
 
 
-export type QueryGetBudgetReportByWeekEndingArgs = {
+export type QueryGetBudgetReportArgs = {
   args: GetBudgetReportArgs;
 };
 

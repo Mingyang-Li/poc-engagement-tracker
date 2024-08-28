@@ -22,7 +22,7 @@ const getbudgetStatus = (args: {
   return `Under-budget`;
 };
 
-export const findBudgetReportByWeekEnding = (
+export const getBudgetReport = (
   args: GetBudgetReportArgs,
 ): Result<BudgetReport, Error> => {
   const { weekEnding } = args
