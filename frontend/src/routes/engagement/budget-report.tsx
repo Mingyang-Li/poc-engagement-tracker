@@ -1,7 +1,13 @@
 import { BudgetStatsCard } from '@/features/cards/budget-stats-card';
-import { YYYY_MM_DD, getSundays } from '@/services/common.service';
+import {
+  YYYY_MM_DD,
+  getMostRecentWeekEnding,
+  getSundays,
+} from '@/services/common.service';
 import { createFileRoute } from '@tanstack/react-router';
 import { z } from 'zod';
+import { List, ListItem, Card, Typography } from '@material-tailwind/react';
+import { useEffect, useState } from 'react';
 
 const schema = z.object({
   engagementId: z.string(),
@@ -11,13 +17,28 @@ const schema = z.object({
 const Page = () => {
   const weekEndings = getSundays(2024);
 
+  const [selectedWeekEnding, setSelectedWeekEnding] = useState(
+    getMostRecentWeekEnding({ weekEndings, startDate: new Date() }),
+  );
+
   return (
     <div className={`flex`}>
-      <div className={`flex flex-col-reverse`}>
-        {weekEndings?.map((date) => <p>{YYYY_MM_DD(date)}</p>)}
-      </div>
-
+      <Card className="w-96">
+        <List>
+          <Typography>Week Endings</Typography>
+          {weekEndings?.map((date, _i) => (
+            <ListItem
+              key={_i}
+              selected={date === selectedWeekEnding}
+              onClick={() => setSelectedWeekEnding(date)}
+            >
+              {YYYY_MM_DD(date)}
+            </ListItem>
+          ))}
+        </List>
+      </Card>
       <BudgetStatsCard />
+      <p>selected date: {YYYY_MM_DD(selectedWeekEnding)}</p>
     </div>
   );
 };
