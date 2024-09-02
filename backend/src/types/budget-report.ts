@@ -1,5 +1,52 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { Budget, Engagement } from '@/generated';
+import { Field, Float, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { Engagement } from '@/generated';
+
+export enum BudgetReportPeriod {
+  THIS_WEEK,
+  YTD,
+}
+registerEnumType(BudgetReportPeriod, {
+  name: `BudgetReportPeriod`,
+});
+
+@ObjectType()
+export class BudgetBreakdown {
+  @Field(() => BudgetReportPeriod, {
+    nullable: true,
+    description: `Refers to either "this week" or "YTD`,
+  })
+  period?: BudgetReportPeriod;
+
+  @Field(() => String, {
+    nullable: true,
+    description: `Refers to the ID of an engagement`,
+  })
+  engagementId?: string;
+
+  @Field(() => String, {
+    nullable: true,
+    description: `Refers to the phase of an engagement`,
+  })
+  phase?: string;
+
+  @Field(() => Float, {
+    nullable: true,
+    description: `Refers to the overall cost of the engagement of a phase for the period specified`,
+  })
+  cost?: number;
+
+  @Field(() => Float, {
+    nullable: true,
+    description: `Refers to the overall budget of the engagement of a phase for the period specified`,
+  })
+  budget?: number;
+
+  @Field(() => String, {
+    nullable: true,
+    description: `Briefly describes whether we're under or over budget by x dollars`,
+  })
+  status?: string;
+}
 
 @ObjectType({
   description: `Useful for displaying all critical info of a budget report for a particular week-ending`,
@@ -25,8 +72,8 @@ export class BudgetReport {
   @Field(() => String, { nullable: true })
   overallStatusThisWeek?: string;
 
-  @Field(() => [Budget], { nullable: true })
-  budgetBreakdownThisWeek?: Budget[];
+  @Field(() => [BudgetBreakdown], { nullable: true })
+  budgetBreakdownThisWeek?: BudgetBreakdown[];
 
   // budget info YTD
   @Field(() => Number, { nullable: true })
@@ -38,6 +85,6 @@ export class BudgetReport {
   @Field(() => String, { nullable: true })
   overallStatusYtd?: string;
 
-  @Field(() => [Budget], { nullable: true })
-  budgetBreakdownYtd?: Budget[];
+  @Field(() => [BudgetBreakdown], { nullable: true })
+  budgetBreakdownYtd?: BudgetBreakdown[];
 }

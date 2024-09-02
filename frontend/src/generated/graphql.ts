@@ -1,18 +1,31 @@
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
+export type MakeEmpty<
+  T extends { [key: string]: unknown },
+  K extends keyof T,
+> = { [_ in K]?: never };
+export type Incremental<T> =
+  | T
+  | {
+      [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
+    };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
-  DateTime: { input: any; output: any; }
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
+  DateTime: { input: any; output: any };
 };
 
 export type Budget = {
@@ -28,6 +41,22 @@ export type Budget = {
 export type BudgetAvgAggregate = {
   __typename?: 'BudgetAvgAggregate';
   amount?: Maybe<Scalars['Float']['output']>;
+};
+
+export type BudgetBreakdown = {
+  __typename?: 'BudgetBreakdown';
+  /** Refers to the overall budget of the engagement of a phase for the period specified */
+  budget?: Maybe<Scalars['Float']['output']>;
+  /** Refers to the overall cost of the engagement of a phase for the period specified */
+  cost?: Maybe<Scalars['Float']['output']>;
+  /** Refers to the ID of an engagement */
+  engagementId?: Maybe<Scalars['String']['output']>;
+  /** Refers to either "this week" or "YTD */
+  period?: Maybe<BudgetReportPeriod>;
+  /** Refers to the phase of an engagement */
+  phase?: Maybe<Scalars['String']['output']>;
+  /** Briefly describes whether we're under or over budget by x dollars */
+  status?: Maybe<Scalars['String']['output']>;
 };
 
 export type BudgetCountAggregate = {
@@ -61,8 +90,8 @@ export type BudgetMinAggregate = {
 /** Useful for displaying all critical info of a budget report for a particular week-ending */
 export type BudgetReport = {
   __typename?: 'BudgetReport';
-  budgetBreakdownThisWeek?: Maybe<Array<Budget>>;
-  budgetBreakdownYtd?: Maybe<Array<Budget>>;
+  budgetBreakdownThisWeek?: Maybe<Array<BudgetBreakdown>>;
+  budgetBreakdownYtd?: Maybe<Array<BudgetBreakdown>>;
   engagement?: Maybe<Engagement>;
   engagementId?: Maybe<Scalars['String']['output']>;
   overallBudgetThisWeek?: Maybe<Scalars['Float']['output']>;
@@ -73,6 +102,11 @@ export type BudgetReport = {
   overallStatusYtd?: Maybe<Scalars['String']['output']>;
   weekEnding?: Maybe<Scalars['DateTime']['output']>;
 };
+
+export enum BudgetReportPeriod {
+  ThisWeek = 'THIS_WEEK',
+  Ytd = 'YTD',
+}
 
 export type BudgetSumAggregate = {
   __typename?: 'BudgetSumAggregate';
@@ -130,7 +164,6 @@ export type Query = {
   __typename?: 'Query';
   getBudgetReport: BudgetReport;
 };
-
 
 export type QueryGetBudgetReportArgs = {
   args: GetBudgetReportArgs;

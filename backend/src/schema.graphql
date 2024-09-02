@@ -142,6 +142,35 @@ type TimesheetEntry {
   engagement: Engagement!
 }
 
+type BudgetBreakdown {
+  """Refers to either "this week" or "YTD"""
+  period: BudgetReportPeriod
+
+  """Refers to the ID of an engagement"""
+  engagementId: String
+
+  """Refers to the phase of an engagement"""
+  phase: String
+
+  """
+  Refers to the overall cost of the engagement of a phase for the period specified
+  """
+  cost: Float
+
+  """
+  Refers to the overall budget of the engagement of a phase for the period specified
+  """
+  budget: Float
+
+  """Briefly describes whether we're under or over budget by x dollars"""
+  status: String
+}
+
+enum BudgetReportPeriod {
+  THIS_WEEK
+  YTD
+}
+
 """
 Useful for displaying all critical info of a budget report for a particular week-ending
 """
@@ -152,11 +181,11 @@ type BudgetReport {
   overallBudgetThisWeek: Float
   overallCostThisWeek: Float
   overallStatusThisWeek: String
-  budgetBreakdownThisWeek: [Budget!]
+  budgetBreakdownThisWeek: [BudgetBreakdown!]
   overallBudgetYtd: Float
   overallCostYtd: Float
   overallStatusYtd: String
-  budgetBreakdownYtd: [Budget!]
+  budgetBreakdownYtd: [BudgetBreakdown!]
 }
 
 type Query {

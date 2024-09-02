@@ -1,31 +1,31 @@
 import { z } from 'zod';
-import { BudgetReport } from '@/types/budget-report';
+import {
+  BudgetBreakdown,
+  BudgetReport,
+  BudgetReportPeriod,
+} from '@/types/budget-report';
 import { Result, err, ok } from 'neverthrow';
 import { logger } from '@/utils/logger';
 import { fromError } from 'zod-validation-error';
 import * as f from '@ngneat/falso';
-import { Budget, Engagement } from '@/generated';
-import { BudgetStatus } from '@/utils/constants';
+import { Engagement } from '@/generated';
 import { GetBudgetReportArgs } from '@/resolvers/budget-report.resolver';
 
-const getbudgetStatus = (args: {
-  cost: number;
-  budget: number;
-}): BudgetStatus => {
+const getbudgetStatus = (args: { cost: number; budget: number }): string => {
   const { cost, budget } = args;
   if (Number.isNaN(cost) || Number.isNaN(budget) || cost === budget) {
     return `Not over-budget nor under-budget`;
   }
 
-  if (cost > budget) return `Over-budget`;
+  if (cost > budget) return `Over-budget by $${Math.abs(cost - budget)}`;
 
-  return `Under-budget`;
+  return `Under-budget by $${Math.abs(cost - budget)}`;
 };
 
 export const getBudgetReport = (
   args: GetBudgetReportArgs,
 ): Result<BudgetReport, Error> => {
-  const { weekEnding } = args
+  const { weekEnding } = args;
   const validateInput = z.date().safeParse(weekEnding);
 
   if (validateInput.success === false) {
@@ -41,61 +41,73 @@ export const getBudgetReport = (
     engagementManager: f.randFullName({ withAccents: false }),
   };
 
-  const overallCostThisWeek = f.randNumber({
-    precision: 10,
-    min: 0,
-    max: 15000,
-  });
-  const overallBudgetThisWeek = f.randNumber({
-    precision: 10,
-    min: 0,
-    max: 15000,
-  });
+  const engagementPhases = Array.from(
+    { length: 4 },
+    () => `Phase - ${f.randBrand()}`,
+  );
+
+  const budgetBreakdownThisWeek: BudgetBreakdown[] = engagementPhases?.map(
+    (phase) => {
+      const cost = f.randNumber({ precision: 10, min: 1000, max: 8000 });
+      const budget = f.randNumber({ precision: 10, min: 1000, max: 8000 });
+      const status = getbudgetStatus({ cost, budget });
+
+      const item: Required<BudgetBreakdown> = {
+        engagementId: engagement?.id,
+        phase,
+        period: BudgetReportPeriod.THIS_WEEK,
+        cost,
+        budget,
+        status,
+      };
+      return item;
+    },
+  );
+
+  const budgetBreakdownYtd: BudgetBreakdown[] = engagementPhases?.map(
+    (phase) => {
+      const cost = f.randNumber({ precision: 10, min: 10000, max: 100000 });
+      const budget = f.randNumber({ precision: 10, min: 10000, max: 100000 });
+      const status = getbudgetStatus({ cost, budget });
+
+      const item: Required<BudgetBreakdown> = {
+        engagementId: engagement?.id,
+        phase,
+        period: BudgetReportPeriod.YTD,
+        cost,
+        budget,
+        status,
+      };
+      return item;
+    },
+  );
+
+  const overallCostThisWeek = budgetBreakdownThisWeek?.reduce(
+    (totalCost, breakdown) => totalCost + (breakdown.cost || 0),
+    0,
+  );
+
+  const overallBudgetThisWeek: number = budgetBreakdownThisWeek?.reduce(
+    (totalCost, breakdown) => totalCost + (breakdown?.budget || 0),
+    0,
+  );
+
   const overallStatusThisWeek = getbudgetStatus({
     cost: overallCostThisWeek,
     budget: overallBudgetThisWeek,
   });
 
-  const overallCostYtd = f.randNumber({
-    precision: 10,
-    min: 10000,
-    max: 1000000,
-  });
-  const overallBudgetYtd = f.randNumber({
-    precision: 10,
-    min: 10000,
-    max: 1000000,
-  });
+  const overallCostYtd = budgetBreakdownYtd?.reduce(
+    (totalCost, breakdown) => totalCost + (breakdown.cost || 0),
+    0,
+  );
+  const overallBudgetYtd = budgetBreakdownYtd?.reduce(
+    (totalCost, breakdown) => totalCost + (breakdown.budget || 0),
+    0,
+  );
   const overallStatusYtd = getbudgetStatus({
     cost: overallCostYtd,
     budget: overallBudgetYtd,
-  });
-
-  const engagementPhases = Array.from(
-    { length: 4 },
-    () => `Phase ${f.randSkill()}`,
-  );
-
-  const budgetBreakdownThisWeek = engagementPhases?.map((phase) => {
-    const item: Budget = {
-      id: f.randUuid(),
-      engagementId: engagement?.id,
-      weekEnding: weekEnding,
-      amount: f.randNumber({ precision: 10, min: 1000, max: 8000 }),
-      phase,
-    };
-    return item;
-  });
-
-  const budgetBreakdownYtd = engagementPhases?.map((phase) => {
-    const item: Budget = {
-      id: f.randUuid(),
-      engagementId: engagement?.id,
-      weekEnding: weekEnding,
-      amount: f.randNumber({ precision: 10, min: 10000, max: 1000000 }),
-      phase,
-    };
-    return item;
   });
 
   const response: BudgetReport = {
