@@ -122,56 +122,65 @@ const Page = () => {
 
   return (
     <div className={`flex`}>
-      <Card className={`w-96`}>
-        <List>
-          <Typography variant={`h4`}>Week Endings</Typography>
-          {weekEndingsWithSelectionStatus?.map((item, _i) => (
-            <ListItem
-              key={_i}
-              selected={item?.selected}
-              disabled={item?.disabled}
-              onClick={() => {
-                setSelectedWeekEnding(item?.date);
-              }}
-            >
-              {YYYY_MM_DD(item?.date)}
-            </ListItem>
-          ))}
-        </List>
+      <Card className={`w-96 h-screen`}>
+        <Typography variant={`h4`}>Week Endings</Typography>
+        <div className={`overflow-y-auto`}>
+          <List>
+            {weekEndingsWithSelectionStatus?.map((item, _i) => (
+              <ListItem
+                key={_i}
+                selected={item?.selected}
+                disabled={item?.disabled}
+                onClick={() => {
+                  setSelectedWeekEnding(item?.date);
+                }}
+              >
+                {YYYY_MM_DD(item?.date)}
+              </ListItem>
+            ))}
+          </List>
+        </div>
       </Card>
 
-      {/* status this week */}
-      <List>
-        <Typography variant={`h3`}>Budget Breakdown (This week)</Typography>
-        {data?.getBudgetReport?.budgetBreakdownThisWeek?.map((item) => {
-          const { phase, cost, budget, status } = item;
-          return (
-            <BudgetStatsCard
-              title={phase as string}
-              cost={cost as number}
-              budget={budget as number}
-              status={status as string}
-            />
-          );
-        })}
-      </List>
+      <div className={`w-auto flex flex-col items-center justify-center h-full`}>
+        <Typography variant={`h2`}>
+          Week-Ending: {YYYY_MM_DD(selectedWeekEnding)}
+        </Typography>
 
-      {/* status YTD */}
-      <List>
-        <Typography variant={`h3`}>Budget Breakdown (YTD)</Typography>
-        {data?.getBudgetReport?.budgetBreakdownYtd?.map((item) => {
-          const { phase, cost, budget, status } = item;
-          return (
-            <BudgetStatsCard
-              title={phase as string}
-              cost={cost as number}
-              budget={budget as number}
-              status={status as string}
-            />
-          );
-        })}
-      </List>
-      <p>selected date: {YYYY_MM_DD(selectedWeekEnding)}</p>
+        <div className={`flex justify-center`}>
+          {/* status this week */}
+          <List>
+            <Typography variant={`h3`}>Budget Breakdown (This week)</Typography>
+            {data?.getBudgetReport?.budgetBreakdownThisWeek?.map((item) => {
+              const { phase, cost, budget, status } = item;
+              return (
+                <BudgetStatsCard
+                  title={phase as string}
+                  cost={cost as number}
+                  budget={budget as number}
+                  status={status as string}
+                />
+              );
+            })}
+          </List>
+
+          {/* status YTD */}
+          <List>
+            <Typography variant={`h3`}>Budget Breakdown (YTD)</Typography>
+            {data?.getBudgetReport?.budgetBreakdownYtd?.map((item) => {
+              const { phase, cost, budget, status } = item;
+              return (
+                <BudgetStatsCard
+                  title={phase as string}
+                  cost={cost as number}
+                  budget={budget as number}
+                  status={status as string}
+                />
+              );
+            })}
+          </List>
+        </div>
+      </div>
     </div>
   );
 };
